@@ -23,7 +23,7 @@ app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false}))
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb'}))
 
 //DataBase
 const mongoose = require('mongoose')

@@ -10,6 +10,7 @@ const bodyParser = require('body-parser')
 //Routes
 const indexRouter = require('./routes/index')
 const authorRouter = require('./routes/authors')
+const bookRouter = require('./routes/books')
 
 //Variables
 const port = process.env.PORT || 3000;
@@ -38,6 +39,7 @@ db.once('open', error => console.log('Connected to Mongoose'))
 //Routes
 app.use('/', indexRouter)
 app.use('/authors', authorRouter)
+app.use('/books', bookRouter)
 
 //run
 app.listen(port, () => {

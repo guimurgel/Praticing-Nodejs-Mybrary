@@ -2,6 +2,8 @@
 node_modules
 /dist
 
+# app folders
+public/uploads
 
 # local env files
 .env

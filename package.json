@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "startDev": "nodemon src/server.js",
+    "start": "node server.js",
+    "startDev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,13 +25,14 @@
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
     "module-alias": "^2.2.2",
-    "mongoose": "^5.10.9"
+    "mongoose": "^5.10.9",
+    "multer": "^1.4.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
   },
   "_moduleAliases": {
     "~": "./",
-    "@": "./src"
+    "@": "./"
   }
 }

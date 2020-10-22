@@ -1,0 +1,31 @@
+{
+  "name": "praticing-nodejs-mybrary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "startDev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guimurgel/Praticing-Nodejs-Mybrary.git"
+  },
+  "author": "guimurgel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guimurgel/Praticing-Nodejs-Mybrary/issues"
+  },
+  "homepage": "https://github.com/guimurgel/Praticing-Nodejs-Mybrary#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "mongoose": "^5.10.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}

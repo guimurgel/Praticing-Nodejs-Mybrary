@@ -6,6 +6,7 @@ const express = require('express')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 //Routes
 const indexRouter = require('./routes/index')
@@ -24,6 +25,7 @@ app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false, limit: '50mb'}))
+app.use(methodOverride('_method'))
 
 //DataBase
 const mongoose = require('mongoose')

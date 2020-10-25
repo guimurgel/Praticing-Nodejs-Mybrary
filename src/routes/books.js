@@ -1,90 +1,86 @@
 const express = require('express')
 const router = express.Router()
 
-//Models
-const Author = require('@/models/author')
+// Models
 const Book = require('@/models/book')
+const Author = require('@/models/author')
 
-//Variables
-const imageMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+// Variables
+const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
 
-//All Books Route
+// All Books Route
 router.get('/', async (req, res) => {
-
   let query = Book.find()
-
   if (req.query.title != null && req.query.title != '') {
     query = query.regex('title', new RegExp(req.query.title, 'i'))
   }
-
-  if (req.query.publishBefore != null && req.query.publishBefore != '') {
-    query = query.lte('publishDate', req.query.publishBefore)
+  if (req.query.publishedBefore != null && req.query.publishedBefore != '') {
+    query = query.lte('publishDate', req.query.publishedBefore)
   }
-
-  if (req.query.publishAfter != null && req.query.publishAfter != '') {
-    query = query.gte('publishDate', req.query.publishAfter)
+  if (req.query.publishedAfter != null && req.query.publishedAfter != '') {
+    query = query.gte('publishDate', req.query.publishedAfter)
   }
-
   try {
     const books = await query.exec()
     res.render('books/index', {
       books: books,
       searchOptions: req.query
     })
-  } catch (error) {
+  } catch {
     res.redirect('/')
   }
-
 })
 
-//New Book Route
+// New Book Route
 router.get('/new', async (req, res) => {
   renderNewPage(res, new Book())
 })
 
-//Create Book Route
+// Create Book Route
 router.post('/', async (req, res) => {
-
   const book = new Book({
     title: req.body.title,
     author: req.body.author,
     publishDate: new Date(req.body.publishDate),
     pageCount: req.body.pageCount,
-    description: req.body.description,
+    description: req.body.description
   })
-
   saveCover(book, req.body.cover)
+
   try {
     const newBook = await book.save()
     res.redirect(`books/${newBook.id}`)
-  } catch (error) {
+  } catch {
     renderNewPage(res, book, true)
   }
 })
 
-//Show Book Route
+// Show Book Route
 router.get('/:id', async (req, res) => {
   try {
-    const book = await Book.findById(req.params.id).populate('author').exec()
+    const book = await Book.findById(req.params.id)
+                           .populate('author')
+                           .exec()
     res.render('books/show', { book: book })
-  } catch (error) {
+  } catch {
     res.redirect('/')
   }
 })
 
-//Edit Book Route
+// Edit Book Route
 router.get('/:id/edit', async (req, res) => {
   try {
     const book = await Book.findById(req.params.id)
     renderEditPage(res, book)
-  } catch (error) {
+  } catch {
     res.redirect('/')
   }
 })
 
-//Update Book Route
+// Update Book Route
 router.put('/:id', async (req, res) => {
   let book
+
   try {
     book = await Book.findById(req.params.id)
     book.title = req.body.title
@@ -92,29 +88,28 @@ router.put('/:id', async (req, res) => {
     book.publishDate = new Date(req.body.publishDate)
     book.pageCount = req.body.pageCount
     book.description = req.body.description
-
-    if (req.body.cover != null && req.body.cover != '') {
+    if (req.body.cover != null && req.body.cover !== '') {
       saveCover(book, req.body.cover)
     }
     await book.save()
     res.redirect(`/books/${book.id}`)
-  } catch (error) {
+  } catch {
     if (book != null) {
       renderEditPage(res, book, true)
     } else {
-      res.redirect('/')
+      redirect('/')
     }
   }
 })
 
-//Delete Book Route
+// Delete Book Page
 router.delete('/:id', async (req, res) => {
   let book
   try {
     book = await Book.findById(req.params.id)
     await book.remove()
-    res.redirect('books')
-  } catch (error) {
+    res.redirect('/books')
+  } catch {
     if (book != null) {
       res.render('books/show', {
         book: book,
@@ -126,8 +121,7 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-
-//Functions
+// Functions
 async function renderNewPage(res, book, hasError = false) {
   renderFormPage(res, book, 'new', hasError)
 }
@@ -151,7 +145,7 @@ async function renderFormPage(res, book, form, hasError = false) {
       }
     }
     res.render(`books/${form}`, params)
-  } catch (error) {
+  } catch {
     res.redirect('/books')
   }
 }
